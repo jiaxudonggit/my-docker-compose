@@ -1,0 +1,23 @@
+version: '3.9'
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    networks:
+      - nginx
+    ports:
+      - '80:80'
+      - '443:443'
+    restart: always
+    privileged: true
+    environment:
+      TZ: 'Asia/Shanghai'
+    volumes:
+      - '/data/docker/nginx:/etc/nginx'
+      - '/data/docker/nginx/log:/var/log/nginx'
+      - '/data/docker/drf_blog_admin.dev/public:/var/local/drf_blog_admin.dev/public'
+      - '/data/docker/drf_blog_admin/public:/var/local/drf_blog_admin/public'
+networks:
+  nginx:
+    name: nginx
+    driver: bridge

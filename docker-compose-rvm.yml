@@ -1,0 +1,12 @@
+version: '3.9'
+name: rccchina
+services:
+  ruby-rvm:
+    image: ruby-rvm:latest
+    container_name: ruby-rvm
+    build: ./rvm
+    network_mode: host
+    restart: always
+    privileged: true
+    volumes:
+      - /Users/jack/Work/Ruby/:/root/workspace/ # 根据自己真实路径设置

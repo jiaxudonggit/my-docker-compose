@@ -1,0 +1,37 @@
+version: '3.9'
+services:
+  elasticsearch:
+    image: docker.io/library/elasticsearch:7.17.1
+    container_name: elasticsearch
+    command:
+      - /bin/bash
+      - -c
+      - |
+        chown -R elasticsearch:elasticsearch /usr/share/elasticsearch
+        /usr/local/bin/docker-entrypoint.sh
+    environment:
+      - "JAVA_OPTS=-Xms64m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms64m -Xmx512m"
+    ulimits:
+      # 取消内存相关限制  用于开启内存锁定
+      memlock:
+        soft: -1
+        hard: -1
+    networks:
+      - nginx
+    ports:
+      - '9200:9200'
+    expose:
+      - 9200
+      - 9300
+    restart: always
+    privileged: true
+    volumes:
+      - '/data/docker/elasticsearch/data:/usr/share/elasticsearch/data'
+      - '/data/docker/elasticsearch/logs:/usr/share/elasticsearch/logs'
+      - '/data/docker/elasticsearch/plugins:/usr/share/elasticsearch/plugins'
+      - '/data/docker/elasticsearch/conf/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml'
+networks:
+  nginx:
+    name: nginx
+    driver: bridge

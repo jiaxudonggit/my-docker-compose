@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  postgresql:
+    image: postgres:latest
+    container_name: postgresql
+    networks:
+      - nginx
+    ports:
+      - '5432:5432'
+    restart: always
+    env_file:
+      - conf/postgres/.env.postgres.db
+    privileged: true
+    volumes:
+      - '/data/docker/postgresql:/var/lib/postgresql/data'
+networks:
+  nginx:
+    name: nginx
+    driver: bridge

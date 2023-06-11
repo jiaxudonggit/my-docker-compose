@@ -1,0 +1,21 @@
+version: '3.9'
+services:
+  confluence:
+    build: ./
+    image: confluence:latest
+    container_name: confluence
+    expose:
+      - 8090
+    networks:
+      - nginx
+    environment:
+      TZ: Asia/Shanghai
+      ATL_PROXY_PORT: 8090
+    restart: always
+    privileged: true
+    volumes:
+      - '/data/docker/confluence:/var/atlassian/application-data/confluence'
+networks:
+  nginx:
+    name: nginx
+    driver: bridge

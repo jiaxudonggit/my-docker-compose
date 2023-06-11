@@ -1,0 +1,11 @@
+version: '3.9'
+services:
+  oracle_11g:
+    image: registry.cn-hangzhou.aliyuncs.com/helowin/oracle_11g
+    container_name: oracle_11g
+    ports:
+      - 1521:1521
+    restart: always
+    privileged: true
+    volumes:
+      - '/data/docker/oracle_11g:/home/oracle'

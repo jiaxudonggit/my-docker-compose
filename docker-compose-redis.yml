@@ -1,0 +1,25 @@
+version: '3.9'
+services:
+  redis:
+    image: redis:latest
+    container_name: redis
+    command:
+      - /bin/bash
+      - -c
+      - |
+          chown -R redis:redis /var/log/redis
+          redis-server /etc/redis.conf
+    networks:
+      - nginx
+    ports:
+      - '6379:6379'
+    restart: always
+    privileged: true
+    volumes:
+      - /data/docker/redis/data:/data
+      - /data/docker/redis/log:/var/log/redis
+      - /data/docker/redis/conf/redis.conf:/etc/redis.conf
+networks:
+  nginx:
+    name: nginx
+    driver: bridge

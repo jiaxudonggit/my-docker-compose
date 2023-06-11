@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+  chatgpt-next-web:
+    image: yidadaa/chatgpt-next-web:latest
+    container_name: chatgpt-next-web
+    networks:
+      - nginx
+    ports:
+      - '3000:3000'
+    restart: always
+    privileged: true
+    env_file:
+      - conf/chatgpt/.chat.env
+networks:
+  nginx:
+    name: nginx
+    driver: bridge

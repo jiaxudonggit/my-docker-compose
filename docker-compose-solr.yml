@@ -1,0 +1,20 @@
+version: '3.9'
+services:
+  solr:
+    image: solr:8.11.1
+    container_name: solr
+    networks:
+      - nginx
+    expose:
+      - 8983
+    ports:
+      - '8983:8983'
+    restart: always
+    privileged: true
+    volumes:
+      - '/data/docker/solr/data:/var/solr/data/'
+      - '/data/docker/solr/server:/opt/solr-8.11.1'
+networks:
+  nginx:
+    name: nginx
+    driver: bridge

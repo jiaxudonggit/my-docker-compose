@@ -1,0 +1,20 @@
+version: '3.9'
+services:
+  clash:
+    image: dreamacro/clash-premium:latest
+    container_name: clash
+    # network_mode: host
+    networks:
+      - nginx
+    ports:
+      - '7890:7890'
+      - '9090:9090'
+    restart: always
+    privileged: true
+    volumes:
+      - '/data/docker/clash/conf/:/root/.config/clash/'
+      - '/data/docker/clash/ui:/root/ui'
+networks:
+  nginx:
+    name: nginx
+    driver: bridge

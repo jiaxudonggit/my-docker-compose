@@ -1,0 +1,19 @@
+cluster.name: "elasticsearch-cluster"
+network.host: 0.0.0.0
+http.port: 9200
+
+# 跨域
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+http.cors.allow-headers: "X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization"
+http.cors.allow-credentials: true
+
+# 用户名密码
+xpack.security.enabled: true
+xpack.security.transport.ssl.enabled: true
+
+# 开启内存锁定
+bootstrap.memory_lock: true
+
+# 指定单节点启动
+discovery.type: "single-node"

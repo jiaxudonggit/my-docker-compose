@@ -1,0 +1,9 @@
+## JVM configuration 
+################################################################ 
+## IMPORTANT: JVM heap size 
+################################################################ 
+… 
+# Xms represents the initial size of total heap space 
+# Xmx represents the maximum size of total heap space 
+-Xms64m
+-Xmx512m

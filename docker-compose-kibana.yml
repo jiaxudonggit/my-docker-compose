@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.1
+    container_name: kibana
+    expose:
+      - 5601
+    networks:
+      - nginx
+    restart: always
+    privileged: true
+    volumes:
+      - '/data/docker/kibana/conf/kibana.yml:/usr/share/kibana/config/kibana.yml'
+networks:
+  nginx:
+    name: nginx
+    driver: bridge

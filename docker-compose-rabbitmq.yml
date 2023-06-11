@@ -1,0 +1,29 @@
+version: '3.9'
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    command:
+      - /bin/bash
+      - -c
+      - |
+        chown -R rabbitmq:rabbitmq /var/log/rabbitmq
+        rabbitmq-server
+    restart: always
+    networks:
+      - nginx
+    ports:
+      - '5672:5672'
+    expose:
+      - 15672
+    env_file:
+      - conf/rabbitmq/.env.rabbitmq.db
+    privileged: true
+    volumes:
+      - /data/docker/rabbitmq/data:/var/lib/rabbitmq
+      - /data/docker/rabbitmq/log:/var/log/rabbitmq
+      - /data/docker/rabbitmq/conf/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+networks:
+  nginx:
+    name: nginx
+    driver: bridge

@@ -1,0 +1,22 @@
+version: '3.9'
+services:
+  nginx_webui:
+    image: cym1102/nginxwebui:latest
+    container_name: nginx-webui
+    networks:
+      - nginx
+    expose:
+      - 8098
+    restart: always
+    privileged: true
+    # network_mode: "host"
+    volumes:
+      - '/data/docker/nginx-webui/:/home/nginxWebUI/'
+      - '/data/docker/nginx:/etc/nginx'
+      - '/data/docker/nginx/log:/var/log/nginx'
+    env_file:
+      - conf/nginx-webui/.env.nginx.db
+networks:
+  nginx:
+    name: nginx
+    driver: bridge

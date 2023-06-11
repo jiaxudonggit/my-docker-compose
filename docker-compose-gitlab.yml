@@ -1,0 +1,73 @@
+version: '3.9'
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    container_name: gitlab
+    hostname: gitlab.xxx.com
+    networks:
+      - nginx
+    ports:
+      - '22:22'
+    restart: always
+    privileged: true
+    env_file:
+      - conf/gitlab/.env.db
+    environment:
+      TZ: 'Asia/Shanghai'
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url = 'https://gitlab.xxx.com'
+        # nginx
+        nginx['enable'] = false
+        gitlab_rails['trusted_proxies'] = ['0.0.0.0']
+        gitlab_workhorse['listen_network'] = 'tcp'
+        gitlab_workhorse['listen_addr'] = '0.0.0.0:8000'
+        web_server['external_users'] = ['gitlab-www', 'nginx', 'root']
+        # 时区
+        gitlab_rails['time_zone'] = 'Asia/Shanghai'
+        # ssh
+        gitlab_rails['gitlab_ssh_host'] = 'gitlab.xxx.com'
+        gitlab_rails['gitlab_shell_ssh_port'] = 22
+        # 邮箱
+        gitlab_rails['smtp_enable'] = true
+        gitlab_rails['smtp_address'] = 'smtp.qq.com'
+        gitlab_rails['smtp_port'] = 465
+        gitlab_rails['smtp_user_name'] = ENV['EMAIL_ADDRESS']
+        gitlab_rails['smtp_password'] = ENV['EMAIL_PASSWORD']
+        gitlab_rails['smtp_authentication'] = 'login'
+        gitlab_rails['smtp_enable_starttls_auto'] = false
+        gitlab_rails['smtp_tls'] = true
+        gitlab_rails['gitlab_email_enabled'] = true
+        gitlab_rails['gitlab_email_from'] = ENV['EMAIL_ADDRESS']
+        gitlab_rails['gitlab_email_display_name'] = 'Gitlab Server'
+        # 内存优化
+        puma['enable'] = true
+        puma['worker_timeout'] = 60
+        puma['worker_processes'] = 4
+        puma['per_worker_max_memory_mb'] = 2048
+        sidekiq['max_concurrency'] = 12
+        prometheus_monitoring['enable'] = false
+        prometheus['enable'] = false
+        grafana['enable'] = false
+        # 数据库
+        postgresql['enable'] = false
+        gitlab_rails['db_adapter'] = 'postgresql'
+        gitlab_rails['db_encoding'] = 'unicode'
+        gitlab_rails['db_pool'] = ENV['POSTGRESQL_POOL'] || 30
+        gitlab_rails['db_host'] = ENV['POSTGRESQL_HOST']
+        gitlab_rails['db_port'] = ENV['POSTGRESQL_PORT'] || 5432
+        gitlab_rails['db_username'] = ENV['POSTGRESQL_USERNAME']
+        gitlab_rails['db_password'] = ENV['POSTGRESQL_PASSWORD']
+        # Redis
+        redis['enable'] = false
+        gitlab_rails['redis_host'] = ENV['REDIS_HOST']
+        gitlab_rails['redis_port'] = ENV['REDIS_PORT'] || 6379
+        gitlab_rails['redis_password'] = ENV['REDIS_PASSWORD']
+        gitlab_rails['redis_database'] = ENV['REDIS_DB'] || 0
+    volumes:
+      - /data/docker/gitlab/config:/etc/gitlab
+      - /data/docker/gitlab/data:/var/opt/gitlab
+      - /data/docker/gitlab/logs:/var/log/gitlab
+networks:
+  nginx:
+    name: nginx
+    driver: bridge

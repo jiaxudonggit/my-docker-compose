@@ -1,0 +1,13 @@
+#
+# ** THIS IS AN AUTO-GENERATED FILE **
+
+server.publicBaseUrl: "https://xxxx.com"  # 这里地址改为你访问kibana的地址，不能以 / 结尾
+server.name: kibana
+server.host: "0.0.0.0"
+server.shutdownTimeout: "5s"
+elasticsearch.hosts: [ "http://xxxx:9200" ]
+monitoring.ui.container.elasticsearch.enabled: true
+elasticsearch.username: "kibana"
+elasticsearch.password: "xxxx" # 改为你自己的密码
+xpack.security.sessionTimeout: 600000
+i18n.locale: "zh-CN"

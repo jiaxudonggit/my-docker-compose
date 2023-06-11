@@ -1,0 +1,22 @@
+version: '3.9'
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    entrypoint: bash -c "chown -R mysql:mysql /var/log/mysql && exec /entrypoint.sh mysqld"
+    networks:
+      - nginx
+    ports:
+      - '3306:3306'
+    restart: always
+    env_file:
+      - conf/mysql/.env.mysql.db
+    privileged: true
+    volumes:
+      - '/data/docker/mysql/data:/var/lib/mysql'
+      - '/data/docker/mysql/conf:/etc/mysql'
+      - '/data/docker/mysql/log:/var/log/mysql'
+networks:
+  nginx:
+    name: nginx
+    driver: bridge

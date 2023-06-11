@@ -1,0 +1,15 @@
+version: '3.9'
+services:
+  dejavu:
+    image: appbaseio/dejavu:latest
+    container_name: dejavu
+    expose:
+      - 1358
+    networks:
+      - nginx
+    restart: always
+    privileged: true
+networks:
+  nginx:
+    name: nginx
+    driver: bridge

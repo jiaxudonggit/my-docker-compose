@@ -1,0 +1,16 @@
+version: '3.9'
+services:
+  maxwell:
+    image: zendesk/maxwell:latest
+    container_name: maxwell
+    command: bin/maxwell --config /app/config.properties
+    networks:
+      - nginx
+    restart: always
+    privileged: true
+    volumes:
+      - /data/docker/maxwell/conf/config.properties:/app/config.properties
+networks:
+  nginx:
+    name: nginx
+    driver: bridge

@@ -1,0 +1,28 @@
+version: '3.9'
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    command:
+      - /bin/bash
+      - -c
+      - |
+          chown -R mongodb:mongodb /var/log/mongodb
+          mongod --config /etc/mongod.conf
+    networks:
+      - nginx
+    ports:
+      - '27017:27017'
+    restart: always
+    privileged: true
+    env_file:
+      - conf/mongo/.env.mongo.db
+    volumes:
+      - '/data/docker/mongo/data:/data/db'
+      - '/data/docker/mongo/backup:/data/backup'
+      - '/data/docker/mongo/log:/var/log/mongodb/'
+      - '/data/docker/mongo/conf/mongod.conf:/etc/mongod.conf'
+networks:
+  nginx:
+    name: nginx
+    driver: bridge
